@@ -14,6 +14,11 @@
 
 (function() {
     'use strict';
+    /*
+    you need to apply for codeforce api key and secret
+    */
+    const apiKey = '123';
+    const apiSecret = '123';
     console.log("inject started");
     async function signCodeforcesUrl(apiKey, apiSecret, methodName, params) {
         // Generate a random 6-character string
@@ -82,8 +87,7 @@
         return {valid: true, val: num};
     }
     $(document).ready(function(){
-        const apiKey = 'a970549803f74802c31e81803e8694513a8a609e';
-        const apiSecret = '339116ad2e45833481df70ae2f2798a31f002f0b';
+        
         const answers_id_queries = ["#question_41404944 > div:nth-child(3) > div:nth-child(4) > div > div > span",
                                     "#question_41404944 > div:nth-child(3) > div:nth-child(6) > div > div > span",
                                     "#question_41404944 > div:nth-child(3) > div:nth-child(8) > div > div > span",
