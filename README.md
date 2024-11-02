@@ -1,34 +1,112 @@
-# ucr cs141 gradescope helper
+# UCR CS141 Gradescope Helper
 
-when you opened the grading page on gradescope, it will shows a button says fetch info from codeforces,
+This tool streamlines the grading process by integrating Codeforces submission data into the Gradescope grading page for UCR CS141. It verifies students' submissions, checks if they completed the correct problems, and retrieves their scores automatically.
 
-after clicked that, the program will fetch all students submissions and validate if the student submitted the right problem and how many scores they got.
+## Features
 
-in order to use this script, you must be a admin of the codeforce contest, and apply a api key in https://codeforces.com/settings/api, and then replace the apikey and apisecret in the script in order to work
+- **Automatic Verification**: Confirms if a student submitted the correct problem for grading.
+- **Score Retrieval**: Fetches and displays each student's score from Codeforces.
+- **Quick Integration**: Easily integrates with the Gradescope grading page for real-time grading insights.
 
-you can install this script here: https://greasyfork.org/zh-CN/scripts/512425-ucr-cs141-grader-helper-script
+## Prerequisites
 
-the command line utility usage:
-execute
-```
-npm i
-```
+- **Admin Access**: You must be an admin for the relevant Codeforces contest.
+- **API Key**: Obtain an API key and secret from Codeforces at [Codeforces API Settings](https://codeforces.com/settings/api).
+- **Script Installation**: Install the script from [Greasyfork](https://greasyfork.org/zh-CN/scripts/512425-ucr-cs141-grader-helper-script).
 
-create a .env file in root directory of this repo.
-input the following into the .env file
+## Installation
 
-```
-apiKey='xxx'
-apiSecret='xxx'
-```
+1. **Clone the Repository**:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
 
-query by contestId and submissionId:
+2. **Install Dependencies**:
+   Execute the following command to install required packages:
+   ```bash
+   npm install
+   ```
 
-```
-node main.js query  552084  285747506
-```
-query by contestId and author(handle):
+3. **API Key Configuration**:
+   - Create a `.env` file in the root directory of this repository.
+   - Add your Codeforces API credentials to the `.env` file:
+     ```env
+     apiKey='YOUR_API_KEY'
+     apiSecret='YOUR_API_SECRET'
+     ```
 
-```
-node main.js qa 552084  zazavirtuoso 
-```
+4. **Script Setup**:
+   - Update the `apikey` and `apisecret` fields in the `userscript.js` file with your Codeforces API credentials.
+   - Install the script on your browser via the provided Greasyfork link.
+
+## Usage
+
+### Gradescope Integration
+1. Open the grading page on Gradescope.
+2. Click the **Fetch Info from Codeforces** button that appears on the page.
+3. The script will automatically:
+   - Retrieve all students' submissions.
+   - Validate if each submission corresponds to the correct problem.
+   - Display each student's score.
+
+### Command Line Utility
+
+You can use the command line tool to retrieve specific submission data. 
+
+#### Commands:
+
+- **Query by Contest ID and Submission ID**:
+  ```bash
+  node main.js query <contestId> <submissionId>
+  ```
+  **Example**:
+  ```bash
+  node main.js query 552084 285747506
+  ```
+
+  **Sample Output**:
+  ```
+  Contest ID: 552084
+  Submission ID: 285747506
+  OK
+  contestId:552084, name:Number Candles, author:caitlinjian, point: 0.5, fullCredit:OK
+  ```
+
+- **Query by Contest ID and Author Handle**:
+  ```bash
+  node main.js qa <contestId> <author_handle>
+  ```
+  **Example**:
+  ```bash
+  node main.js qa 552084 aloftballoon
+  ```
+
+  **Sample Output**:
+  ```
+  Contest ID: 552084
+  handle ID: aloftballoon
+  OK
+  contestId:552084, name:Merge Them!, author:aloftballoon, point: 2, fullCredit:OK
+  contestId:552084, name:Shopping at Diagon Alley, author:aloftballoon, point: 2, fullCredit:OK
+  contestId:552084, name:Time Turner, author:aloftballoon, point: 0.3, fullCredit:PARTIAL
+  contestId:552084, name:Number Candles, author:aloftballoon, point: 0.5, fullCredit:OK
+  ```
+
+## Expected Output
+
+When the commands are executed, you will receive detailed responses indicating:
+- Contest and submission details.
+- Scores awarded to the student for each problem.
+- Status of credit (full or partial).
+
+## Troubleshooting
+
+- **Invalid API Key or Secret**: Double-check your API key and secret in the `.env` file and `userscript.js`.
+- **Permission Errors**: Ensure you have admin access for the Codeforces contest.
+- **Network Issues**: If the script fails to fetch data, verify your internet connection and try again.
+
+## License
+
+This project is licensed under the MIT License.
+
