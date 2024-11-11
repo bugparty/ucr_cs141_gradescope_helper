@@ -87,13 +87,7 @@ async function querySubmissionByAuthor(contest_id, handle) {
 }
 let contest_id = 0;
 let submission_id = 0;
-// Define the 'query' command
-program
-  .command('query <contest_id> <submission_id>')
-  .description('Query a contest and submission ID')
-  .action((contest_id_, submission_id_) => {
-    contest_id = contest_id_;
-    submission_id = submission_id_;
+function doQueryById(contest_id, submission_id){
     console.log(`Contest ID: ${contest_id}`);
     console.log(`Submission ID: ${submission_id}`);
     querySubmissionById(contest_id, submission_id).then(async url => {
@@ -109,19 +103,20 @@ program
             throw new Error(`API error! Status: ${data.status}`);
         }
         let result = data.result.filter(item => item.id == submission_id);
+        if (result.length ==0){
+            console.log("no submission found, check your submission id");
+            return;
+        }
         if(result.length != 1){
+            console.log("result", result);
             throw new Error(`API error! Invalid result length: ${result.length}`);
         }
         result =result[0];
         //console.log(result);
         console.log(`contestId:${result.contestId}, name:${result.problem.name}, author:${result.author.members[0].handle}, point: ${result.points}, fullCredit:${result.verdict}`);
     })
-  });
-  program
-  .command('qa <contest_id> <handle>')
-  .description('Query a contest and author(handle)')
-  .action((contest_id_, handle) => {
-    contest_id = contest_id_;
+}
+function doQueryByAuthor(contest_id, handle){
     console.log(`Contest ID: ${contest_id}`);
     console.log(`handle ID: ${handle}`);
     querySubmissionByAuthor(contest_id, handle).then(async url => {
@@ -183,6 +178,23 @@ program
         }
 
     })
+}
+// Define the 'query' command
+program
+  .command('query <contest_id> <submission_id>')
+  .description('Query a contest and submission ID')
+  .action((contest_id_, submission_id_) => {
+        doQueryById(contest_id_, submission_id_);
+  });
+  program
+  .command('qa <contest_id> <handle or submission_id>')
+  .description('Query a contest and author(handle) or submission_id')
+  .action((contest_id_, handle_or_submission_id) => {
+    if(/^\d{8,}$/.test(handle_or_submission_id.trim())){
+        doQueryById(contest_id_, handle_or_submission_id);
+    }else{
+        doQueryByAuthor(contest_id_, handle_or_submission_id);
+    }
   });
 // Parse the command line arguments
 program.parse(process.argv);
